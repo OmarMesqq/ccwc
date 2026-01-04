@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 static void print_bytes(FILE* f, const char* filename);
+static void print_lines(FILE* f, const char* filename);
 
 int main(int argc, char** argv) {
     
@@ -21,6 +22,10 @@ int main(int argc, char** argv) {
             if (optionsArg[1] == 'c') {
                 print_bytes(f, filename);
             }
+
+            if (optionsArg[1] == 'l') {
+                print_lines(f, filename);
+            }
         }
     }
 
@@ -32,4 +37,13 @@ static void print_bytes(FILE* f, const char* filename) {
     long length = ftell(f);
     rewind(f);
     printf("%2c%ld %s\n", ' ', length, filename);
+}
+
+static void print_lines(FILE* f, const char* filename) {
+    unsigned size = 0;
+    int c = 0;
+    while ((c = fgetc(f)) != EOF) {
+        if (c == '\n') ++size;
+    }
+    printf("%4c%d %s\n", ' ', size, filename);
 }
