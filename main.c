@@ -7,6 +7,7 @@
 static void print_bytes(FILE* f, const char* filename);
 static void print_lines(FILE* f, const char* filename);
 static void print_words(FILE* f, const char* filename);
+static void print_characters(FILE* f, const char* filename);
 
 int main(int argc, char** argv) {
     
@@ -34,6 +35,10 @@ int main(int argc, char** argv) {
 
             if (optionsArg[1] == 'w') {
                 print_words(f, filename);
+            }
+
+            if (optionsArg[1] == 'm') {
+                print_characters(f, filename);
             }
         }
     }
@@ -77,4 +82,54 @@ static void print_words(FILE* f, const char* filename) {
         }
     }
     printf("%3c%d %s\n", ' ', count, filename);
+}
+
+static void print_characters(FILE* f, const char* filename) {
+    int c = 0;
+    unsigned count = 0;
+    unsigned char inMultiByteCh = 0;
+    unsigned char multiByteChSize = 0;
+
+    while ((c = fgetc(f)) != EOF) {
+        // single byte UTF-8 characters have MSB off
+        if (((c >> 7) & 1) == 0) {
+            ++count;
+            continue;
+        }
+        // here, we are at a start or continuation multibyte character
+
+        if (inMultiByteCh) {
+            if (multiByteChSize > 0) {
+                --multiByteChSize;
+                continue;
+            } else {
+                ++count;
+                inMultiByteCh = 0;
+            }
+        }
+
+        c = c >> 4;
+        switch (c) {
+            case 3: { // 11 -> 2-byte representation
+                inMultiByteCh = 1;
+                multiByteChSize = 1;    // 2 - 1
+                break;
+            }
+            case 7: { // 111 -> 3-byte representation
+                inMultiByteCh = 1;
+                multiByteChSize = 2;    // 3 - 1
+                break;
+            }
+            case 15: { // 1111 (0xF) -> 4-byte representation
+                inMultiByteCh = 1;
+                multiByteChSize = 3;    // 4 - 1
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    printf("%2c%d %s\n", ' ', count, filename);
 }
