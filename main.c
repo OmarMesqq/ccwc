@@ -63,25 +63,18 @@ static void print_words(FILE* f, const char* filename) {
     unsigned count = 0;
 
     /**
-    * STATE    INPUT       ACTION
-    * IN       b           state is now OUT. old word is over, increment counter
-    * OUT      nb          state is now IN
-    */
+     * INPUT        TRANSITION  ACTION
+     * blank        *->OUT      end any previous word, if any
+     * non-blank    *->IN       start a new word if outside of one
+     */
     while ((c = fgetc(f)) != EOF) {
-        if (state == IN && iswspace(c)) {
+        if (iswspace(c)) {
             state = OUT;
+        }
+        else if (state == OUT) {
+            state = IN;
             ++count;
         }
-        else if (state == OUT && !iswspace(c)) {
-            state = IN;
-        }
-        // if (iswspace(c)) {
-        //     state = OUT;
-        // }
-        // else if (state == OUT) {
-        //     state = IN;
-        //     ++count;
-        // }
     }
     printf("%3c%d %s\n", ' ', count, filename);
 }
