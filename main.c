@@ -99,36 +99,32 @@ static void print_characters(FILE* f, const char* filename) {
         // here, we are at a start or continuation multibyte character
 
         if (inMultiByteCh) {
-            if (multiByteChSize > 0) {
-                --multiByteChSize;
-                continue;
-            } else {
+            if (--multiByteChSize == 0) {
                 ++count;
                 inMultiByteCh = 0;
             }
+            continue;
         }
 
         c = c >> 4;
         switch (c) {
             case 6: { // 110 -> 2-byte representation
-                inMultiByteCh = 1;
-                multiByteChSize = 1;    // 2 - 1
+                multiByteChSize = 1;    // 2 - current one
                 break;
             }
             case 14: { // 1110 (0xE) -> 3-byte representation
-                inMultiByteCh = 1;
-                multiByteChSize = 2;    // 3 - 1
+                multiByteChSize = 2;    // 3 - current one
                 break;
             }
             case 15: { // 1111 (0xF) -> 4-byte representation
-                inMultiByteCh = 1;
-                multiByteChSize = 3;    // 4 - 1
+                multiByteChSize = 3;    // 4 - current one
                 break;
             }
             default: {
                 break;
             }
         }
+        inMultiByteCh = 1;
     }
 
     printf("%2c%d %s\n", ' ', count, filename);
