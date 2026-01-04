@@ -110,12 +110,12 @@ static void print_characters(FILE* f, const char* filename) {
 
         c = c >> 4;
         switch (c) {
-            case 3: { // 11 -> 2-byte representation
+            case 6: { // 110 -> 2-byte representation
                 inMultiByteCh = 1;
                 multiByteChSize = 1;    // 2 - 1
                 break;
             }
-            case 7: { // 111 -> 3-byte representation
+            case 14: { // 1110 (0xE) -> 3-byte representation
                 inMultiByteCh = 1;
                 multiByteChSize = 2;    // 3 - 1
                 break;
