@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-static void print_bytes(FILE* f);
+static void print_bytes(FILE* f, const char* filename);
 
 int main(int argc, char** argv) {
     
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
             }
 
             if (optionsArg[1] == 'c') {
-                print_bytes(f);
+                print_bytes(f, filename);
             }
         }
     }
@@ -27,9 +27,9 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-static void print_bytes(FILE* f) {
+static void print_bytes(FILE* f, const char* filename) {
     fseek(f, 0 , SEEK_END);
     long length = ftell(f);
     rewind(f);
-    printf("%2c%ld\n", ' ', length);
+    printf("%2c%ld %s\n", ' ', length, filename);
 }
