@@ -8,6 +8,7 @@ static void print_bytes(FILE* f, const char* filename);
 static void print_lines(FILE* f, const char* filename);
 static void print_words(FILE* f, const char* filename);
 static void print_characters(FILE* f, const char* filename);
+static unsigned long get_number_width(unsigned long ul);
 
 int main(int argc, char** argv) {
     
@@ -117,4 +118,28 @@ static void print_characters(FILE* f, const char* filename) {
     }
 
     printf("%2c%d %s\n", ' ', count, filename);
+}
+
+static unsigned long get_number_width(unsigned long ul) {
+    unsigned long width = 0;
+    unsigned long q = 0;  // quotient
+    unsigned long D = 0;  // divisor
+    
+    if (ul < 0) {
+        return -1;
+    }
+
+    D = ul;
+    q = D / 10;
+    while (1) {
+        if (D == 0) {
+            break;
+        }
+        ++width;
+        D = q;
+        q = D / 10;
+    }
+    
+    printf("width of %lu is: %lu\n", ul, width);
+    return width;
 }
