@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <wctype.h>
+#include <stdlib.h>
 
 #define OUT 0   // not in a word
 #define IN 1    // inside a word
@@ -9,6 +10,9 @@ static void print_lines(FILE* f, const char* filename);
 static void print_words(FILE* f, const char* filename);
 static void print_characters(FILE* f, const char* filename);
 static unsigned long get_number_width(unsigned long ul);
+static char* numtoi(unsigned long ul, unsigned long width);
+
+static char const format_sp_int[] = " %*s";
 
 int main(int argc, char** argv) {
     
@@ -52,6 +56,15 @@ static void print_bytes(FILE* f, const char* filename) {
     long length = ftell(f);
     rewind(f);
     printf("%2c%ld %s\n", ' ', length, filename);
+    unsigned long width = get_number_width(length);
+    char* s = numtoi(length, width);
+    if (!s) {
+        fprintf(stderr, "malloc failed\n");
+        return;
+    }
+
+    printf(format_sp_int, (int) width, s);
+    free(s);
 }
 
 static void print_lines(FILE* f, const char* filename) {
@@ -147,4 +160,40 @@ static unsigned long get_number_width(unsigned long ul) {
     
     printf("width of %lu is: %lu\n", ul, width);
     return width;
+}
+
+static char* numtoi(unsigned long ul, unsigned long width) {
+    unsigned long q = 0;  // quotient
+    unsigned long D = 0;  // divisor
+    unsigned long r = 0;  // remainder
+    
+    if (ul < 0) {
+        return NULL;
+    }
+
+    char* str = (char*) malloc(width * sizeof(char));
+    if (!str) {
+        return NULL;
+    }
+
+    int i = 0;
+    D = ul;
+    q = D / 10;
+    r = D % 10;
+    while (1) {
+        if (D == 0) {
+            break;
+        }
+
+        str[i] = r + '0';
+        ++i;
+
+        D = q;
+        q = D / 10;
+        r = D % 10;
+    }
+    
+    str[width] = '\0';
+    printf("%lu to string is: %s\n", ul, str);
+    return str;
 }
