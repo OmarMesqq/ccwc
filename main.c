@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
         const char* filename = argv[2];
         if (optionsArg[0] == '-') {
             if (!filename) {
-                fprintf(stderr, "expected filename for option %s\n", filename);
+                fprintf(stderr, "expected filename for option %s\n", optionsArg);
                 return -1;
             }
             FILE* f = fopen(filename, "r");

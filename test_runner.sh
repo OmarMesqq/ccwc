@@ -3,12 +3,27 @@ set -uo pipefail
 
 make release
 
-echo "Step 1 (-c option): number of bytes"
-WC_CMD_1=$(wc -c test.txt)
-CCWC_CMD_1=$(./ccwc -c test.txt)
+# Helper function to normalize output based on OS
+# macOS 'wc' pads with spaces (usually 8 chars wide for the number)
+# Linux 'wc' does not. This mimics the macOS padding on Linux.
+normalize_wc() {
+    local input="$1"
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # On Linux: Use printf to add the 8-character padding macOS uses
+        # This takes "342190 test.txt" and makes it "  342190 test.txt"
+        printf "%8s %s" $(echo "$input")
+    else
+        # On macOS: Keep it exactly as is
+        printf '%s' "$input"
+    fi
+}
 
-WC_CMD_2=$(wc -c utf8_peq.txt)
-CCWC_CMD_2=$(./ccwc -c utf8_peq.txt)
+echo "Step 1 (-c option): number of bytes"
+WC_CMD_1=$(normalize_wc "$(wc -c test.txt)")
+CCWC_CMD_1=$(normalize_wc "$(./ccwc -c test.txt)")
+
+WC_CMD_2=$(normalize_wc "$(wc -c utf8_peq.txt)")
+CCWC_CMD_2=$(normalize_wc "$(./ccwc -c utf8_peq.txt)")
 
 echo "Comparing test.txt"
 printf '%s' "$WC_CMD_1"
@@ -35,14 +50,13 @@ case $? in
  1) echo "TEST FAILED! output mismatch for utf8_peq.txt"; exit 1 ;;
  *) echo "ERROR when comparing outputs"; exit 1 ;;
 esac
-
 
 echo "Step 2 (-l option): number of lines"
-WC_CMD_1=$(wc -l test.txt)
-CCWC_CMD_1=$(./ccwc -l test.txt)
+WC_CMD_1=$(normalize_wc "$(wc -l test.txt)")
+CCWC_CMD_1=$(normalize_wc "$(./ccwc -l test.txt)")
 
-WC_CMD_2=$(wc -l utf8_peq.txt)
-CCWC_CMD_2=$(./ccwc -l utf8_peq.txt)
+WC_CMD_2=$(normalize_wc "$(wc -l utf8_peq.txt)")
+CCWC_CMD_2=$(normalize_wc "$(./ccwc -l utf8_peq.txt)")
 
 echo "Comparing test.txt"
 printf '%s' "$WC_CMD_1"
@@ -70,13 +84,12 @@ case $? in
  *) echo "ERROR when comparing outputs"; exit 1 ;;
 esac
 
-
 echo "Step 3 (-w option): number of words"
-WC_CMD_1=$(wc -w test.txt)
-CCWC_CMD_1=$(./ccwc -w test.txt)
+WC_CMD_1=$(normalize_wc "$(wc -w test.txt)")
+CCWC_CMD_1=$(normalize_wc "$(./ccwc -w test.txt)")
 
-WC_CMD_2=$(wc -w utf8_peq.txt)
-CCWC_CMD_2=$(./ccwc -w utf8_peq.txt)
+WC_CMD_2=$(normalize_wc "$(wc -w utf8_peq.txt)")
+CCWC_CMD_2=$(normalize_wc "$(./ccwc -w utf8_peq.txt)")
 
 echo "Comparing test.txt"
 printf '%s' "$WC_CMD_1"
@@ -105,11 +118,11 @@ case $? in
 esac
 
 echo "Step 4 (-m option): number of characters"
-WC_CMD_1=$(wc -m test.txt)
-CCWC_CMD_1=$(./ccwc -m test.txt)
+WC_CMD_1=$(normalize_wc "$(wc -m test.txt)")
+CCWC_CMD_1=$(normalize_wc "$(./ccwc -m test.txt)")
 
-WC_CMD_2=$(wc -m utf8_peq.txt)
-CCWC_CMD_2=$(./ccwc -m utf8_peq.txt)
+WC_CMD_2=$(normalize_wc "$(wc -m utf8_peq.txt)")
+CCWC_CMD_2=$(normalize_wc "$(./ccwc -m utf8_peq.txt)")
 
 echo "Comparing test.txt"
 printf '%s' "$WC_CMD_1"
