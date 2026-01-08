@@ -225,6 +225,14 @@ static char* numtoi(unsigned long ul, unsigned long width) {
 
     int i = width - 1;
     D = ul;
+    
+    //TODO: stop this hack
+    if (D == 0) {
+        str[i] = '0';
+        ++i;
+        str[i] = '\0';
+        return str;
+    }
     q = D / 10;
     r = D % 10;
     while (1) {
