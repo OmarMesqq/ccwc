@@ -2,10 +2,10 @@
 #include <wctype.h>
 #include <stdlib.h>
 
-static void print_bytes(FILE* f, const char* filename);
-static void print_lines(FILE* f, const char* filename);
-static void print_words(FILE* f, const char* filename);
-static void print_characters(FILE* f, const char* filename);
+static void print_bytes(FILE* f);
+static void print_lines(FILE* f);
+static void print_words(FILE* f);
+static void print_characters(FILE* f);
 static unsigned long get_number_width(unsigned long ul);
 static char* numtoi(unsigned long ul, unsigned long width);
 
@@ -28,20 +28,22 @@ int main(int argc, char** argv) {
             }
 
             if (optionsArg[1] == 'c') {
-                print_bytes(f, filename);
+                print_bytes(f);
             }
 
             if (optionsArg[1] == 'l') {
-                print_lines(f, filename);
+                print_lines(f);
             }
 
             if (optionsArg[1] == 'w') {
-                print_words(f, filename);
+                print_words(f);
             }
 
             if (optionsArg[1] == 'm') {
-                print_characters(f, filename);
+                print_characters(f);
             }
+            printf(" %s", filename);
+            putchar('\n');
         }
     } else if (argc == 2) {
         const char* filename = argv[1];
@@ -54,15 +56,17 @@ int main(int argc, char** argv) {
             fprintf(stderr, "failed to open file: %s\n", filename);
             return -1;
         }
-        print_lines(f, filename);
-        print_words(f, filename);
-        print_bytes(f, filename);
+        print_lines(f);
+        print_words(f);
+        print_bytes(f);
+        printf(" %s", filename);
+        putchar('\n');
     }
 
     return 0;
 }
 
-static void print_bytes(FILE* f, const char* filename) {
+static void print_bytes(FILE* f) {
     fseek(f, 0 , SEEK_END);
     long length = ftell(f);
     rewind(f);
@@ -78,17 +82,16 @@ static void print_bytes(FILE* f, const char* filename) {
     }
 
     printf(" %*s", (int) width, s);
-    printf(" %s", filename);
-    putchar('\n');
     free(s);
 }
 
-static void print_lines(FILE* f, const char* filename) {
+static void print_lines(FILE* f) {
     unsigned size = 0;
     int c = 0;
     while ((c = fgetc(f)) != EOF) {
         if (c == '\n') ++size;
     }
+    rewind(f);
     unsigned long width = get_number_width(size);
     char* s = numtoi(size, width);
     if (!s) {
@@ -101,12 +104,10 @@ static void print_lines(FILE* f, const char* filename) {
     }
 
     printf(" %*s", (int) width, s);
-    printf(" %s", filename);
-    putchar('\n');
     free(s);
 }
 
-static void print_words(FILE* f, const char* filename) {
+static void print_words(FILE* f) {
     #define OUT 0   // not in a word
     #define IN 1    // inside a word
     
@@ -128,6 +129,7 @@ static void print_words(FILE* f, const char* filename) {
             ++count;
         }
     }
+    rewind(f);
 
     unsigned long width = get_number_width(count);
     char* s = numtoi(count, width);
@@ -141,12 +143,10 @@ static void print_words(FILE* f, const char* filename) {
     }
 
     printf(" %*s", (int) width, s);
-    printf(" %s", filename);
-    putchar('\n');
     free(s);
 }
 
-static void print_characters(FILE* f, const char* filename) {
+static void print_characters(FILE* f) {
     int c = 0;
     unsigned count = 0;
     unsigned char inMultiByteCh = 0;
@@ -177,6 +177,7 @@ static void print_characters(FILE* f, const char* filename) {
         }
         inMultiByteCh = 1;
     }
+    rewind(f);
 
     unsigned long width = get_number_width(count);
     char* s = numtoi(count, width);
@@ -190,8 +191,6 @@ static void print_characters(FILE* f, const char* filename) {
     }
 
     printf(" %*s", (int) width, s);
-    printf(" %s", filename);
-    putchar('\n');
     free(s);
 }
 
