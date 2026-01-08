@@ -185,10 +185,6 @@ static unsigned long get_number_width(unsigned long ul) {
     unsigned long width = 0;
     unsigned long q = 0;  // quotient
     unsigned long D = 0;  // divisor
-    
-    if (ul < 0) {
-        return -1;
-    }
 
     //TODO: stop this hack
     if (ul == 0) {
@@ -213,10 +209,6 @@ static char* numtoi(unsigned long ul, unsigned long width) {
     unsigned long q = 0;  // quotient
     unsigned long D = 0;  // divisor
     unsigned long r = 0;  // remainder
-    
-    if (ul < 0) {
-        return NULL;
-    }
 
     char* str = (char*) malloc(width * sizeof(char));
     if (!str) {
@@ -225,7 +217,7 @@ static char* numtoi(unsigned long ul, unsigned long width) {
 
     int i = width - 1;
     D = ul;
-    
+
     //TODO: stop this hack
     if (D == 0) {
         str[i] = '0';
