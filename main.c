@@ -13,7 +13,7 @@ static char const format_sp_int[] = " %*s";
 
 int main(int argc, char** argv) {
     
-    if (argc >= 2) {
+    if (argc >= 3) {
         const char* optionsArg = argv[1];
         const char* filename = argv[2];
         if (optionsArg[0] == '-') {
@@ -43,6 +43,20 @@ int main(int argc, char** argv) {
                 print_characters(f, filename);
             }
         }
+    } else if (argc == 2) {
+        const char* filename = argv[1];
+        if (!filename) {
+            fprintf(stderr, "expected filename for option %s\n", filename);
+            return -1;
+        }
+        FILE* f = fopen(filename, "r");
+        if (!f) {
+            fprintf(stderr, "failed to open file: %s\n", filename);
+            return -1;
+        }
+        print_lines(f, filename);
+        print_words(f, filename);
+        print_bytes(f, filename);
     }
 
     return 0;
