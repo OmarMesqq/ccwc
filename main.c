@@ -2,9 +2,6 @@
 #include <wctype.h>
 #include <stdlib.h>
 
-#define OUT 0   // not in a word
-#define IN 1    // inside a word
-
 static void print_bytes(FILE* f, const char* filename);
 static void print_lines(FILE* f, const char* filename);
 static void print_words(FILE* f, const char* filename);
@@ -96,6 +93,9 @@ static void print_lines(FILE* f, const char* filename) {
 }
 
 static void print_words(FILE* f, const char* filename) {
+    #define OUT 0   // not in a word
+    #define IN 1    // inside a word
+    
     unsigned char state = OUT;
     int c = 0;
     unsigned count = 0;
