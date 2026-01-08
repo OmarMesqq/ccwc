@@ -55,7 +55,6 @@ static void print_bytes(FILE* f, const char* filename) {
     fseek(f, 0 , SEEK_END);
     long length = ftell(f);
     rewind(f);
-    printf("%2c%ld %s\n", ' ', length, filename);
     unsigned long width = get_number_width(length);
     char* s = numtoi(length, width);
     if (!s) {
@@ -63,7 +62,13 @@ static void print_bytes(FILE* f, const char* filename) {
         return;
     }
 
-    printf(format_sp_int, (int) width, s);
+    if (width < 7) {
+        width = 7;
+    }
+
+    printf(" %*s", (int) width, s);
+    printf(" %s", filename);
+    putchar('\n');
     free(s);
 }
 
@@ -73,7 +78,21 @@ static void print_lines(FILE* f, const char* filename) {
     while ((c = fgetc(f)) != EOF) {
         if (c == '\n') ++size;
     }
-    printf("%4c%d %s\n", ' ', size, filename);
+    unsigned long width = get_number_width(size);
+    char* s = numtoi(size, width);
+    if (!s) {
+        fprintf(stderr, "malloc failed\n");
+        return;
+    }
+
+    if (width < 7) {
+        width = 7;
+    }
+
+    printf(" %*s", (int) width, s);
+    printf(" %s", filename);
+    putchar('\n');
+    free(s);
 }
 
 static void print_words(FILE* f, const char* filename) {
@@ -95,7 +114,22 @@ static void print_words(FILE* f, const char* filename) {
             ++count;
         }
     }
-    printf("%3c%d %s\n", ' ', count, filename);
+
+    unsigned long width = get_number_width(count);
+    char* s = numtoi(count, width);
+    if (!s) {
+        fprintf(stderr, "malloc failed\n");
+        return;
+    }
+
+    if (width < 7) {
+        width = 7;
+    }
+
+    printf(" %*s", (int) width, s);
+    printf(" %s", filename);
+    putchar('\n');
+    free(s);
 }
 
 static void print_characters(FILE* f, const char* filename) {
@@ -130,7 +164,21 @@ static void print_characters(FILE* f, const char* filename) {
         inMultiByteCh = 1;
     }
 
-    printf("%2c%d %s\n", ' ', count, filename);
+    unsigned long width = get_number_width(count);
+    char* s = numtoi(count, width);
+    if (!s) {
+        fprintf(stderr, "malloc failed\n");
+        return;
+    }
+
+    if (width < 7) {
+        width = 7;
+    }
+
+    printf(" %*s", (int) width, s);
+    printf(" %s", filename);
+    putchar('\n');
+    free(s);
 }
 
 static unsigned long get_number_width(unsigned long ul) {
@@ -158,7 +206,6 @@ static unsigned long get_number_width(unsigned long ul) {
         q = D / 10;
     }
     
-    printf("width of %lu is: %lu\n", ul, width);
     return width;
 }
 

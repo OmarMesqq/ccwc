@@ -11,6 +11,11 @@ WC_CMD_2=$(wc -c utf8_peq.txt)
 CCWC_CMD_2=$(./ccwc -c utf8_peq.txt)
 
 echo "Comparing test.txt"
+printf '%s' "$WC_CMD_1"
+echo ""
+printf '%s' "$CCWC_CMD_1"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
 case $? in
  0) ;;
@@ -19,6 +24,11 @@ case $? in
 esac
 
 echo "Comparing utf8_peq.txt"
+printf '%s' "$WC_CMD_2"
+echo ""
+printf '%s' "$CCWC_CMD_2"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
 case $? in
  0) ;;
@@ -35,6 +45,11 @@ WC_CMD_2=$(wc -l utf8_peq.txt)
 CCWC_CMD_2=$(./ccwc -l utf8_peq.txt)
 
 echo "Comparing test.txt"
+printf '%s' "$WC_CMD_1"
+echo ""
+printf '%s' "$CCWC_CMD_1"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
 case $? in
  0) ;;
@@ -43,6 +58,11 @@ case $? in
 esac
 
 echo "Comparing utf8_peq.txt"
+printf '%s' "$WC_CMD_2"
+echo ""
+printf '%s' "$CCWC_CMD_2"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
 case $? in
  0) ;;
@@ -59,6 +79,11 @@ WC_CMD_2=$(wc -w utf8_peq.txt)
 CCWC_CMD_2=$(./ccwc -w utf8_peq.txt)
 
 echo "Comparing test.txt"
+printf '%s' "$WC_CMD_1"
+echo ""
+printf '%s' "$CCWC_CMD_1"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
 case $? in
  0) ;;
@@ -67,6 +92,11 @@ case $? in
 esac
 
 echo "Comparing utf8_peq.txt"
+printf '%s' "$WC_CMD_2"
+echo ""
+printf '%s' "$CCWC_CMD_2"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
 case $? in
  0) ;;
@@ -82,6 +112,11 @@ WC_CMD_2=$(wc -m utf8_peq.txt)
 CCWC_CMD_2=$(./ccwc -m utf8_peq.txt)
 
 echo "Comparing test.txt"
+printf '%s' "$WC_CMD_1"
+echo ""
+printf '%s' "$CCWC_CMD_1"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
 case $? in
  0) ;;
@@ -90,6 +125,11 @@ case $? in
 esac
 
 echo "Comparing utf8_peq.txt"
+printf '%s' "$WC_CMD_2"
+echo ""
+printf '%s' "$CCWC_CMD_2"
+echo ""
+
 cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
 case $? in
  0) ;;
