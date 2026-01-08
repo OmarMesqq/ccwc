@@ -150,4 +150,37 @@ case $? in
  *) echo "ERROR when comparing outputs"; exit 1 ;;
 esac
 
+echo "Step 5: no flags"
+WC_CMD_1=$(normalize_wc "$(wc test.txt)")
+CCWC_CMD_1=$(normalize_wc "$(./ccwc test.txt)")
+
+WC_CMD_2=$(normalize_wc "$(wc utf8_peq.txt)")
+CCWC_CMD_2=$(normalize_wc "$(./ccwc utf8_peq.txt)")
+
+echo "Comparing test.txt"
+printf '%s' "$WC_CMD_1"
+echo ""
+printf '%s' "$CCWC_CMD_1"
+echo ""
+
+cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
+case $? in
+ 0) ;;
+ 1) echo "TEST FAILED! output mismatch for test.txt"; exit 1 ;;
+ *) echo "ERROR when comparing outputs"; exit 1 ;;
+esac
+
+echo "Comparing utf8_peq.txt"
+printf '%s' "$WC_CMD_2"
+echo ""
+printf '%s' "$CCWC_CMD_2"
+echo ""
+
+cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
+case $? in
+ 0) ;;
+ 1) echo "TEST FAILED! output mismatch for utf8_peq.txt"; exit 1 ;;
+ *) echo "ERROR when comparing outputs"; exit 1 ;;
+esac
+
 echo "SUCCESS! All tests passed."
