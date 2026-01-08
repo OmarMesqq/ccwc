@@ -129,6 +129,11 @@ static unsigned long get_number_width(unsigned long ul) {
         return -1;
     }
 
+    //TODO: stop this hack
+    if (ul == 0) {
+        return 1;
+    }
+
     D = ul;
     q = D / 10;
     while (1) {
