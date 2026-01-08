@@ -176,7 +176,7 @@ static char* numtoi(unsigned long ul, unsigned long width) {
         return NULL;
     }
 
-    int i = 0;
+    int i = width - 1;
     D = ul;
     q = D / 10;
     r = D % 10;
@@ -186,7 +186,7 @@ static char* numtoi(unsigned long ul, unsigned long width) {
         }
 
         str[i] = r + '0';
-        ++i;
+        --i;
 
         D = q;
         q = D / 10;
@@ -194,6 +194,5 @@ static char* numtoi(unsigned long ul, unsigned long width) {
     }
     
     str[width] = '\0';
-    printf("%lu to string is: %s\n", ul, str);
     return str;
 }
