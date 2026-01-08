@@ -106,23 +106,12 @@ static void print_characters(FILE* f, const char* filename) {
             continue;
         }
 
-        c = c >> 4;
-        switch (c) {
-            case 6: { // 110 -> 2-byte representation
-                multiByteChSize = 1;    // 2 - current one
-                break;
-            }
-            case 14: { // 1110 (0xE) -> 3-byte representation
-                multiByteChSize = 2;    // 3 - current one
-                break;
-            }
-            case 15: { // 1111 (0xF) -> 4-byte representation
-                multiByteChSize = 3;    // 4 - current one
-                break;
-            }
-            default: {
-                break;
-            }
+        if ((c & 0xE0) == 0xC0) {          /* 110xxxxx → 2‑byte */
+            multiByteChSize = 1;    // 2 - current one
+        } else if ((c & 0xF0) == 0xE0) {    /* 1110xxxx → 3‑byte */
+            multiByteChSize = 2;        // 3 - current one
+        } else if ((c & 0xF8) == 0xF0) {    /* 11110xxx → 4‑byte */
+            multiByteChSize = 3;    // 4 - current one
         }
         inMultiByteCh = 1;
     }
