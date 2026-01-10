@@ -6,7 +6,7 @@ It has been an amazing opportunity to learn lots of things:
 - implementing discrete math algorithms by hand
 - understanding the (mess) rich variety of `wc` implementations for formatting output*
 - using FSMs for modelling state transitions
-- ([once again](github.com/OmarMesqq/unicode_converter)) doing low-level bit processing of UTF-8 chars
+- ([once again](https://github.com/OmarMesqq/unicode_converter)) doing low-level bit processing of UTF-8 chars
 - file and standard input byte reading 
 
 
