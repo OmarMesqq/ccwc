@@ -96,8 +96,11 @@ int main(int argc, char** argv) {
 }
 
 static void print_bytes(FILE* f) {
-    fseek(f, 0 , SEEK_END);
-    long length = ftell(f);
+    long length = 0;
+    int c = 0;
+    while ((c = fgetc(f)) != EOF) {
+        ++length;
+    }
     rewind(f);
     unsigned long width = get_number_width(length);
     char* s = numtoi(length, width);
