@@ -203,17 +203,17 @@ case $? in
  *) echo "ERROR when comparing outputs"; exit 1 ;;
 esac
 
-# echo "Comparing utf8_peq.txt"
-# printf '%s' "$WC_CMD_2"
-# echo ""
-# printf '%s' "$CCWC_CMD_2"
-# echo ""
+echo "Comparing utf8_peq.txt"
+printf '%s' "$WC_CMD_2"
+echo ""
+printf '%s' "$CCWC_CMD_2"
+echo ""
 
-# cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
-# case $? in
-#  0) ;;
-#  1) echo "TEST FAILED! output mismatch for utf8_peq.txt"; exit 1 ;;
-#  *) echo "ERROR when comparing outputs"; exit 1 ;;
-# esac
+cmp -s <(printf '%s' "$WC_CMD_2") <(printf '%s' "$CCWC_CMD_2")
+case $? in
+ 0) ;;
+ 1) echo "TEST FAILED! output mismatch for utf8_peq.txt"; exit 1 ;;
+ *) echo "ERROR when comparing outputs"; exit 1 ;;
+esac
 
 echo "SUCCESS! All tests passed."
