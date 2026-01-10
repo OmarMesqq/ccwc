@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <wctype.h>
 #include <stdlib.h>
+#include "utils.h"
 
 static void print_bytes(FILE* f);
 static void print_lines(FILE* f);
 static void print_words(FILE* f);
 static void print_characters(FILE* f);
-static unsigned long get_number_width(unsigned long ul);
-static char* numtoi(unsigned long ul, unsigned long width);
 
 static char const format_sp_int[] = " %*s";
 static char const format_filename_int[] = " %s";
@@ -228,67 +227,4 @@ static void print_characters(FILE* f) {
 
     printf(format_sp_int, (int) width, s);
     free(s);
-}
-
-static unsigned long get_number_width(unsigned long ul) {
-    unsigned long width = 0;
-    unsigned long q = 0;  // quotient
-    unsigned long D = 0;  // divisor
-
-    //TODO: stop this hack
-    if (ul == 0) {
-        return 1;
-    }
-
-    D = ul;
-    q = D / 10;
-    while (1) {
-        if (D == 0) {
-            break;
-        }
-        ++width;
-        D = q;
-        q = D / 10;
-    }
-    
-    return width;
-}
-
-static char* numtoi(unsigned long ul, unsigned long width) {
-    unsigned long q = 0;  // quotient
-    unsigned long D = 0;  // divisor
-    unsigned long r = 0;  // remainder
-
-    char* str = (char*) malloc(width * sizeof(char));
-    if (!str) {
-        return NULL;
-    }
-
-    int i = width - 1;
-    D = ul;
-
-    //TODO: stop this hack
-    if (D == 0) {
-        str[i] = '0';
-        ++i;
-        str[i] = '\0';
-        return str;
-    }
-    q = D / 10;
-    r = D % 10;
-    while (1) {
-        if (D == 0) {
-            break;
-        }
-
-        str[i] = r + '0';
-        --i;
-
-        D = q;
-        q = D / 10;
-        r = D % 10;
-    }
-    
-    str[width] = '\0';
-    return str;
 }

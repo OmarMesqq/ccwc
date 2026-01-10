@@ -1,6 +1,7 @@
 #!/bin/bash
 set -uo pipefail
 
+rm -f ccwc
 make release
 
 # Helper function to normalize output based on OS
