@@ -5,23 +5,29 @@
 unsigned long get_number_width(unsigned long ul) {
     unsigned long width = 0;
     unsigned long q = 0;  // quotient
-    unsigned long D = 0;  // divisor
+    unsigned long D = ul;  // divisor: starts as the given number
 
-    //TODO: stop this hack
-    if (ul == 0) {
-        return 1;
-    }
-
-    D = ul;
-    q = D / 10;
-    while (1) {
-        if (D == 0) {
-            break;
-        }
+    /**
+     * Every whole number >= 0, has at least one digit,
+     * so a `do...while` seems appropriate as 
+     * the width should be 1 at the minimum.
+     * 
+     * Loop termination condition is whether the divisor reaches zero.
+     * As such, right after considering a number has at least one digit (`++width`),
+     * we get the quotient of the first or previous number by 10, and set
+     * the next divisor as it.
+     * 
+     * The number 10 has this cool feature that allows breaking down the number in its digits
+     * as we count in decimal. To get a number's width we simply count how many iterations
+     * it takes to "walk through" all the digits - eventually we'll get a single digit
+     * number that divided by 10 yields 0, thus breaking the loop.
+     */
+    do {
         ++width;
-        D = q;
         q = D / 10;
-    }
+        D = q;
+    } while (D != 0);
+
     
     return width;
 }
