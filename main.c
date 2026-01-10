@@ -23,7 +23,7 @@ static char const format_filename_int[] = " %s";
 
 int main(int argc, char** argv) {
     
-    if (argc >= 3) {
+    if (argc == 3) {    // 'ccwc -flag <file>'
         const char* optionsArg = argv[1];
         const char* filename = argv[2];
         if (optionsArg[0] == '-') {
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
             return -1;
         }
         
-        if (firstArg[0] != '-') { // no flags passed, run defaults on provided file
+        if (firstArg[0] != '-') { // 'ccwc <file>'
             FILE* f = fopen(firstArg, "r");
             if (!f) {
                 fprintf(stderr, "failed to open file: %s\n", firstArg);
@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
             print_bytes(f);
             printf(format_filename_int, firstArg);
             putchar('\n');
-        } else { // passed some flag(s), attempt to get file from stdin
+        } else { // 'ccwc -flag'
             char flag = firstArg[1];
             if (!flag) {
                 fprintf(stderr, "no flags passed.Aborting.\n");
