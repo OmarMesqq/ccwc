@@ -10,6 +10,7 @@ static unsigned long get_number_width(unsigned long ul);
 static char* numtoi(unsigned long ul, unsigned long width);
 
 static char const format_sp_int[] = " %*s";
+static char const format_filename_int[] = " %s";
 
 int main(int argc, char** argv) {
     
@@ -42,7 +43,7 @@ int main(int argc, char** argv) {
             if (optionsArg[1] == 'm') {
                 print_characters(f);
             }
-            printf(" %s", filename);
+            printf(format_filename_int, filename);
             putchar('\n');
         }
     } else if (argc == 2) {
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
             print_lines(f);
             print_words(f);
             print_bytes(f);
-            printf(" %s", firstArg);
+            printf(format_filename_int, firstArg);
             putchar('\n');
         } else { // passed some flag(s), attempt to get file from stdin
             char flag = firstArg[1];
@@ -109,7 +110,7 @@ static void print_bytes(FILE* f) {
         width = 7;
     }
 
-    printf(" %*s", (int) width, s);
+    printf(format_sp_int, (int) width, s);
     free(s);
 }
 
@@ -131,7 +132,7 @@ static void print_lines(FILE* f) {
         width = 7;
     }
 
-    printf(" %*s", (int) width, s);
+    printf(format_sp_int, (int) width, s);
     free(s);
 }
 
@@ -170,7 +171,7 @@ static void print_words(FILE* f) {
         width = 7;
     }
 
-    printf(" %*s", (int) width, s);
+    printf(format_sp_int, (int) width, s);
     free(s);
 }
 
@@ -218,7 +219,7 @@ static void print_characters(FILE* f) {
         width = 7;
     }
 
-    printf(" %*s", (int) width, s);
+    printf(format_sp_int, (int) width, s);
     free(s);
 }
 
