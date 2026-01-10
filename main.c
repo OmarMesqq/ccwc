@@ -8,7 +8,17 @@ static void print_lines(FILE* f);
 static void print_words(FILE* f);
 static void print_characters(FILE* f);
 
+/**
+ * Output formatter for every `wc`/`ccwc` count.
+ * Every column has a single whitespace to its left
+ * and is right-justified by the width of the count
+ */
 static char const format_sp_int[] = " %*s";
+/**
+ * Output formatter for the filename, when supplied.
+ * `wc` prints the filename as the last column with
+ * a single whitespace to its left as well
+ */
 static char const format_filename_int[] = " %s";
 
 int main(int argc, char** argv) {
@@ -98,6 +108,9 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+/**
+ * Prints formatted **byte count** of a file `f` to `stdout`
+ */
 static void print_bytes(FILE* f) {
     long length = 0;
     int c = 0;
@@ -105,6 +118,7 @@ static void print_bytes(FILE* f) {
         ++length;
     }
     rewind(f);
+
     unsigned long width = get_number_width(length);
     char* s = numtoi(length, width);
     if (!s) {
@@ -112,6 +126,7 @@ static void print_bytes(FILE* f) {
         return;
     }
 
+    // Enforce minimum column width
     if (width < 7) {
         width = 7;
     }
@@ -120,6 +135,9 @@ static void print_bytes(FILE* f) {
     free(s);
 }
 
+/**
+ * Prints formatted **line count** of a file `f` to `stdout`
+ */
 static void print_lines(FILE* f) {
     unsigned size = 0;
     int c = 0;
@@ -127,6 +145,7 @@ static void print_lines(FILE* f) {
         if (c == '\n') ++size;
     }
     rewind(f);
+
     unsigned long width = get_number_width(size);
     char* s = numtoi(size, width);
     if (!s) {
@@ -134,6 +153,7 @@ static void print_lines(FILE* f) {
         return;
     }
 
+    // Enforce minimum column width
     if (width < 7) {
         width = 7;
     }
@@ -142,6 +162,14 @@ static void print_lines(FILE* f) {
     free(s);
 }
 
+/**
+ * Prints formatted **word count** of a file `f` to `stdout`.
+ * 
+ * Pursuant to `man wc`: a word is any sequence of chars
+ * whose call to `iswspace` does NOT return true.
+ * Implements a simple FSM to handle state transitions
+ * (word->end word->etc).
+ */
 static void print_words(FILE* f) {
     #define OUT 0   // not in a word
     #define IN 1    // inside a word
@@ -173,6 +201,7 @@ static void print_words(FILE* f) {
         return;
     }
 
+    // Enforce minimum column width
     if (width < 7) {
         width = 7;
     }
@@ -180,7 +209,11 @@ static void print_words(FILE* f) {
     printf(format_sp_int, (int) width, s);
     free(s);
 }
-
+/**
+ * Prints formatted **character count** of a file `f` to `stdout`.
+ * 
+ * **Assumes file is UTF-8 encoded**, handling single and multi byte sequences.
+ */
 static void print_characters(FILE* f) {
     int c = 0;
     unsigned count = 0;
@@ -221,6 +254,7 @@ static void print_characters(FILE* f) {
         return;
     }
 
+    // Enforce minimum column width
     if (width < 7) {
         width = 7;
     }
