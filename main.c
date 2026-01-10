@@ -46,21 +46,25 @@ int main(int argc, char** argv) {
             putchar('\n');
         }
     } else if (argc == 2) {
-        const char* filename = argv[1];
-        if (!filename) {
-            fprintf(stderr, "expected filename for option %s\n", filename);
+        const char* firstArg = argv[1];
+
+        if (!firstArg) {
+            fprintf(stderr, "expected a second CLI argument.\n");
             return -1;
         }
-        FILE* f = fopen(filename, "r");
-        if (!f) {
-            fprintf(stderr, "failed to open file: %s\n", filename);
-            return -1;
+        
+        if (firstArg[0] != '-') { // no flags passed, run defaults on provided file
+            FILE* f = fopen(firstArg, "r");
+            if (!f) {
+                fprintf(stderr, "failed to open file: %s\n", firstArg);
+                return -1;
+            }
+            print_lines(f);
+            print_words(f);
+            print_bytes(f);
+            printf(" %s", firstArg);
+            putchar('\n');
         }
-        print_lines(f);
-        print_words(f);
-        print_bytes(f);
-        printf(" %s", filename);
-        putchar('\n');
     }
 
     return 0;
