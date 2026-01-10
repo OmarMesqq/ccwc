@@ -183,25 +183,25 @@ case $? in
  *) echo "ERROR when comparing outputs"; exit 1 ;;
 esac
 
-# echo "Final Step: read from stdin if no filename specified"
-# WC_CMD_1=$(normalize_wc "$(cat test.txt | wc -l)")
-# CCWC_CMD_1=$(normalize_wc "$(cat test.txt | ./ccwc -l)")
+echo "Final Step: read from stdin if no filename specified"
+WC_CMD_1=$(normalize_wc "$(cat test.txt | wc -l)")
+CCWC_CMD_1=$(normalize_wc "$(cat test.txt | ./ccwc -l)")
 
-# WC_CMD_2=$(normalize_wc "$(cat utf8_peq.txt | wc -c)")
-# CCWC_CMD_2=$(normalize_wc "$(cat utf8_peq.txt | ./ccwc -c)")
+WC_CMD_2=$(normalize_wc "$(cat utf8_peq.txt | wc -c)")
+CCWC_CMD_2=$(normalize_wc "$(cat utf8_peq.txt | ./ccwc -c)")
 
-# echo "Comparing test.txt"
-# printf '%s' "$WC_CMD_1"
-# echo ""
-# printf '%s' "$CCWC_CMD_1"
-# echo ""
+echo "Comparing test.txt"
+printf '%s' "$WC_CMD_1"
+echo ""
+printf '%s' "$CCWC_CMD_1"
+echo ""
 
-# cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
-# case $? in
-#  0) ;;
-#  1) echo "TEST FAILED! output mismatch for test.txt"; exit 1 ;;
-#  *) echo "ERROR when comparing outputs"; exit 1 ;;
-# esac
+cmp -s <(printf '%s' "$WC_CMD_1") <(printf '%s' "$CCWC_CMD_1")
+case $? in
+ 0) ;;
+ 1) echo "TEST FAILED! output mismatch for test.txt"; exit 1 ;;
+ *) echo "ERROR when comparing outputs"; exit 1 ;;
+esac
 
 # echo "Comparing utf8_peq.txt"
 # printf '%s' "$WC_CMD_2"
@@ -216,4 +216,4 @@ esac
 #  *) echo "ERROR when comparing outputs"; exit 1 ;;
 # esac
 
-# echo "SUCCESS! All tests passed."
+echo "SUCCESS! All tests passed."
