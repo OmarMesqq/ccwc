@@ -33,7 +33,6 @@ unsigned long get_number_width(unsigned long ul) {
 }
 
 char* numtoi(unsigned long ul, unsigned long width) {
-    unsigned long q = 0;  // quotient
     unsigned long d = ul;  // dividend: starts as the given number
     unsigned long r = 0;  // remainder
 
@@ -45,27 +44,23 @@ char* numtoi(unsigned long ul, unsigned long width) {
 
     int i = width - 1;
 
-    //TODO: stop this hack
-    if (d == 0) {
-        str[i] = '0';
-        ++i;
-        str[i] = '\0';
-        return str;
-    }
-    q = d / 10;
-    r = d % 10;
-    while (1) {
-        if (d == 0) {
-            break;
-        }
-
-        str[i] = r + '0';
-        --i;
-
-        d = q;
-        q = d / 10;
+    /**
+     * Once again, every number has at least one digit, so do...while is the way to go.
+     * Loop terminates when number is entirely "chopped down" i.e dividend is zero.
+     * 
+     * Using the fact that numbers are represented in base 10, we extract the individual digits
+     * by getting the remainders of divisions of the first/previous dividends by 10.
+     * 
+     * The digits are obtained right to left (least to most significant). Therefore,
+     * we write to this string in the reverse order of the divisions.
+     */
+    do {
         r = d % 10;
-    }
+        str[i] = r + '0';   // get higher digits as chars by summing the value of the digit itself to zero's ASCII
+        --i;    // start at the string's end, keep traversing backwards
+        d = d / 10;
+    } while (d != 0);
+
     
     str[width] = '\0';
     return str;
