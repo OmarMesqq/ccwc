@@ -47,7 +47,6 @@ int main(int argc, char** argv) {
         }
     } else if (argc == 2) {
         const char* firstArg = argv[1];
-
         if (!firstArg) {
             fprintf(stderr, "expected a second CLI argument.\n");
             return -1;
@@ -63,6 +62,31 @@ int main(int argc, char** argv) {
             print_words(f);
             print_bytes(f);
             printf(" %s", firstArg);
+            putchar('\n');
+        } else { // passed some flag(s), attempt to get file from stdin
+            char flag = firstArg[1];
+            if (!flag) {
+                fprintf(stderr, "no flags passed.Aborting.\n");
+                return -1;
+            }
+
+            switch (flag) {
+                case 'c':
+                    print_bytes(stdin);
+                    break;
+                case 'l':
+                    print_lines(stdin);
+                    break;
+                case 'w':
+                    print_words(stdin);
+                    break;
+                case 'm':
+                    print_characters(stdin);
+                    break;
+                default:
+                    fprintf(stderr, "unknown flag %c\n", flag);
+                    return -1;
+            }
             putchar('\n');
         }
     }
