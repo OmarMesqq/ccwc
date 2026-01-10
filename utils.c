@@ -37,7 +37,7 @@ char* numtoi(unsigned long ul, unsigned long width) {
     unsigned long d = ul;  // dividend: starts as the given number
     unsigned long r = 0;  // remainder
 
-    char* str = (char*) malloc(width * sizeof(char));
+    char* str = (char*) malloc((width + 1) * sizeof(char));
     if (!str) {
         fprintf(stderr, "numtoi: failed to allocate string to represent number!\n");
         return NULL;
