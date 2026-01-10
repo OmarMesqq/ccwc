@@ -90,6 +90,10 @@ int main(int argc, char** argv) {
             }
             putchar('\n');
         }
+    } else {
+        char* usage = "usage:\n1. ccwc -flag <file>\n2. ccwc <file>\n3. ccwc -flag (for stdin processing)\n";
+        fprintf(stderr, "%s", usage);
+        return -1;
     }
 
     return 0;
