@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <wctype.h>
 #include <stdlib.h>
-#include "utils.h"
+#include "libs/libcutilities/cutilities.h"
 
 static void print_bytes(FILE* f);
 static void print_lines(FILE* f);
