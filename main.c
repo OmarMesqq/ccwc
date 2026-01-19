@@ -120,7 +120,7 @@ static void print_bytes(FILE* f) {
     rewind(f);
 
     unsigned long width = get_number_width(length);
-    char* s = numtoi(length, width);
+    char* s = ultos(length, width);
     if (!s) {
         fprintf(stderr, "malloc failed\n");
         return;
@@ -147,7 +147,7 @@ static void print_lines(FILE* f) {
     rewind(f);
 
     unsigned long width = get_number_width(size);
-    char* s = numtoi(size, width);
+    char* s = ultos(size, width);
     if (!s) {
         fprintf(stderr, "malloc failed\n");
         return;
@@ -195,7 +195,7 @@ static void print_words(FILE* f) {
     rewind(f);
 
     unsigned long width = get_number_width(count);
-    char* s = numtoi(count, width);
+    char* s = ultos(count, width);
     if (!s) {
         fprintf(stderr, "malloc failed\n");
         return;
@@ -248,7 +248,7 @@ static void print_characters(FILE* f) {
     rewind(f);
 
     unsigned long width = get_number_width(count);
-    char* s = numtoi(count, width);
+    char* s = ultos(count, width);
     if (!s) {
         fprintf(stderr, "malloc failed\n");
         return;
